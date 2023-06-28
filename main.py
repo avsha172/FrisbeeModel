@@ -4,7 +4,6 @@ from matplotlib.animation import PillowWriter
 import math
 
 
-
 def init_global_vars():
     global vy_stamp, vx_stamp, t_stamp, ax_stamp, x_stamp, y_stamp, ALPHA_stamp, ay_stamp
     vy_stamp = []
@@ -16,10 +15,11 @@ def init_global_vars():
     ALPHA_stamp = []
     ay_stamp = []
 
-def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y = 0, time_to_run = 1, is_visualize = False, QuiverRun = [0]):
+
+def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y=0, time_to_run=1, is_visualize=False, QuiverRun=[0]):
     global vy_stamp, vx_stamp, t_stamp, ax_stamp, x_stamp, y_stamp, ALPHA_stamp, ay_stamp
     init_global_vars()
-    frisbee_angle = frisbee_angle*math.pi/180
+    frisbee_angle = frisbee_angle * math.pi / 180
     m = 0.175
     p = 1.23
     AREA = 0.0568
@@ -29,8 +29,10 @@ def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y = 0, time_to_run = 1
     CDA = 0.685
     ALPHA0 = -4 * math.pi / 180
     g = -9.81
-    ax_Func = lambda vx, vy: -p * AREA / 2 * (np.power(vx,2)+np.power(vy,2)) * (math.cos(Teta)*Cd+Cl*math.sin(Teta)) / m
-    ay_Func = lambda vx, vy: p * AREA / 2 * (np.power(vx,2)+np.power(vy,2)) * (math.cos(Teta)*Cl-Cd*math.sin(Teta)) / m+g
+    ax_Func = lambda vx, vy: -p * AREA / 2 * (np.power(vx, 2) + np.power(vy, 2)) * (
+                math.cos(Teta) * Cd + Cl * math.sin(Teta)) / m
+    ay_Func = lambda vx, vy: p * AREA / 2 * (np.power(vx, 2) + np.power(vy, 2)) * (
+                math.cos(Teta) * Cl - Cd * math.sin(Teta)) / m + g
     ay = 0
     ax = 0
     x = 0
@@ -38,7 +40,7 @@ def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y = 0, time_to_run = 1
     if (pow(vx, 2) + pow(vy, 2) != 0):
         Teta = math.acos(vx / pow(pow(vx, 2) + pow(vy, 2), 0.5)) * ((vy > 0) * 2 - 1)
     else:
-        Teta = -90*math.pi/180
+        Teta = -90 * math.pi / 180
     while y >= 0:
         t += dt
         ALPHA = frisbee_angle - Teta
@@ -70,17 +72,17 @@ def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y = 0, time_to_run = 1
             t2 = 0
             vy = 0
             while QuiverRun[1] >= t2:
-                t2 = t2+dt
+                t2 = t2 + dt
                 ALPHA = frisbee_angle - Teta
                 Cl = CL0 + CLA * ALPHA
                 Cd = CD0 + CDA * pow(ALPHA - ALPHA0, 2)
                 ax = ax_Func(vx, vy)
                 ay = ay_Func(vx, vy)
-                appendItemsQuiver(ax, ay, vx, vy,new_ax_stamp,new_ay_stamp,new_vx_stamp,new_vy_stamp)
+                appendItemsQuiver(ax, ay, vx, vy, new_ax_stamp, new_ay_stamp, new_vx_stamp, new_vy_stamp)
                 vy = vy + dt
                 Teta = math.acos(vx / pow(pow(vx, 2) + pow(vy, 2), 0.5)) * ((vy > 0) * 2 - 1)
-            vx = vx +dt
-    if QuiverRun[0]>0:
+            vx = vx + dt
+    if QuiverRun[0] > 0:
         plt.quiver(new_vx_stamp, new_vy_stamp, new_ax_stamp, new_ay_stamp)
         plt.plot(x_stamp, y_stamp)
         plt.title('velocity in y direction in relation to x direction.\n Arrows are the acceleration of the frisbee')
@@ -91,16 +93,15 @@ def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y = 0, time_to_run = 1
         an = np.linspace(0, 2 * np.pi, 100)
         # fig, axs = plt.subplots(1, 1)
         plt.figure(figsize=(6, 6))
-        plt.scatter(x_stamp, y_stamp,s = 10, c=np.array(ALPHA_stamp)/math.pi*180, cmap='rainbow')
+        plt.scatter(x_stamp, y_stamp, s=10, c=np.array(ALPHA_stamp) / math.pi * 180, cmap='rainbow')
         plt.colorbar(label="color of the point is the value of the attack angle")
         an = np.linspace(0, 2 * np.pi, 100)
         # fig, axs = plt.subplots(1, 1)
         plt.figure(figsize=(15, 15))
         plt.plot(x_stamp, y_stamp)
-        # plt.colorbar(label="color of the point is the value of the attack angle")
-        plt.xlim(0,30)
+        plt.xlim(0, 30)
         plt.ylim(0, 5)
-        #axs.axis('equal')
+        # axs.axis('equal')
         # axs.set(xlim=(0,55), ylim=(0,55))
         plt.title('The path of the frisbee')
         plt.ylabel('y direction')
@@ -111,13 +112,16 @@ def simulation_handler(vy=0, vx=0, frisbee_angle=0, dt=1, y = 0, time_to_run = 1
         # plt.ylabel('The attack angle')
         # plt.xlabel('The x direction')
         # plt.show()
-    return x_stamp, y_stamp, np.array(ALPHA_stamp)/math.pi*180
+    return x_stamp, y_stamp, np.array(ALPHA_stamp) / math.pi * 180
 
-def appendItemsQuiver(ax,ay,vx,vy,new_ax_stamp,new_ay_stamp,new_vx_stamp,new_vy_stamp):
+
+def appendItemsQuiver(ax, ay, vx, vy, new_ax_stamp, new_ay_stamp, new_vx_stamp, new_vy_stamp):
     new_ay_stamp.append(ay)
     new_ax_stamp.append(ax)
     new_vy_stamp.append(vy)
     new_vx_stamp.append(vx)
+
+
 def appendItems(ax, ay, y, x, vy, vx, t, ALPHA):
     global vy_stamp, vx_stamp, t_stamp, ax_stamp, x_stamp, y_stamp, ALPHA_stamp, ay_stamp
     ax_stamp.append(ax)
@@ -130,14 +134,17 @@ def appendItems(ax, ay, y, x, vy, vx, t, ALPHA):
     ALPHA_stamp.append(ALPHA)
 
 
-def AnimateGraphDiffrences(V = 20, dt = 0.01, y=3):
+def AnimateGraphDiffrences(V=20, dt=0.01, y=3):
     fps = 3
-    metadata =  dict(title = 'Movie', artist = 'Moah')
+    metadata = dict(title='Movie', artist='Moah')
     writer = PillowWriter(fps=fps, metadata=metadata)
-    
+
     fig = plt.figure()
     frisbee_angle = 0
     with writer.saving(fig, "AttackAngle.gif", 100):
+        xlist, ylist, zlist = simulation_handler(vy=V * np.sin(frisbee_angle * math.pi / 180),
+                                                 vx=V * np.cos(frisbee_angle * math.pi / 180), frisbee_angle=
+                                                 frisbee_angle, dt=dt, y=y, time_to_run=100)
         plt.scatter(xlist, ylist, s=10, c=zlist, cmap='rainbow')
         plt.colorbar(label="color of the point is the value of the attack angle")
         plt.title("animation of the path of the frisbee \n every line is a diffrent time the frisbee was thrown")
@@ -146,16 +153,15 @@ def AnimateGraphDiffrences(V = 20, dt = 0.01, y=3):
         plt.clim(-4, 60)
         writer.grab_frame()
         for frisbee_angle in np.linspace(1,30,30):
-            xlist, ylist, zlist= simulation_handler(vy=V*np.sin(frisbee_angle*math.pi/180),
-                                                    V=20*np.cos(frisbee_angle*math.pi/180),
-                                                    frisbee_angle =frisbee_angle, dt = dt, y=y,
-                                                    time_to_run=100)
+            xlist, ylist, zlist = simulation_handler(vy=V * np.sin(frisbee_angle * math.pi / 180),
+                                                     vx=V * np.cos(frisbee_angle * math.pi / 180), frisbee_angle=
+                                                     frisbee_angle, dt=dt, y=y, time_to_run=100)
             plt.scatter(xlist, ylist, s = 10, c=zlist, cmap='rainbow')
             plt.clim(-4, 60)
             writer.grab_frame()
 
 
-simulation_handler(vy=-10, vx=20, frisbee_angle = 0, dt = 0.01, y=3, time_to_run=10, is_visualize=True, QuiverRun = [0,20,2])
-
-
+simulation_handler(vy=-10, vx=20, frisbee_angle=0, dt=0.01, y=3, time_to_run=10, is_visualize=True,
+                   QuiverRun=[0, 20, 2])
+AnimateGraphDiffrences(V = 20, dt =0.01, y = 3)
 
