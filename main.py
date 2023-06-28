@@ -130,40 +130,32 @@ def appendItems(ax, ay, y, x, vy, vx, t, ALPHA):
     ALPHA_stamp.append(ALPHA)
 
 
-frisbee_angle = 0
-simulation_handler(vy=-10, vx=20, frisbee_angle =
-frisbee_angle, dt = 0.01, y=3, time_to_run=10, is_visualize=True, QuiverRun = [0,20,2])
+def AnimateGraphDiffrences(V = 20, dt = 0.01, y=3):
+    fps = 3
+    writer = PillowWriter(fps=fps, metadata=metadata)
+    metadata =  dict(title = 'Movie', artist = 'Moah')
+    
+    fig = plt.figure()
+    frisbee_angle = 0
+    with writer.saving(fig, "AttackAngle.gif", 100):
+        plt.scatter(xlist, ylist, s=10, c=zlist, cmap='rainbow')
+        plt.colorbar(label="color of the point is the value of the attack angle")
+        plt.title("animation of the path of the frisbee \n every line is a diffrent time the frisbee was thrown")
+        plt.xlabel("x direction fo firsbee")
+        plt.ylabel("y direction fo firsbee")
+        plt.clim(-4, 60)
+        writer.grab_frame()
+        for frisbee_angle in np.linspace(1,30,30):
+            xlist, ylist, zlist= simulation_handler(vy=V*np.sin(frisbee_angle*math.pi/180),
+                                                    V=20*np.cos(frisbee_angle*math.pi/180),
+                                                    frisbee_angle =frisbee_angle, dt = dt, y=y,
+                                                    time_to_run=100)
+            plt.scatter(xlist, ylist, s = 10, c=zlist, cmap='rainbow')
+            plt.clim(-4, 60)
+            writer.grab_frame()
+
+
+simulation_handler(vy=-10, vx=20, frisbee_angle = 0, dt = 0.01, y=3, time_to_run=10, is_visualize=True, QuiverRun = [0,20,2])
 
 
 
-
-
-
-# this is the animation part
-#fps = 3
-# V_start = 20
-# writer = PillowWriter(fps=fps, metadata=metadata)
-# metadata =  dict(title = 'Movie', artist = 'Moah')
-#
-# fig = plt.figure()
-# frisbee_angle = 0
-# with writer.saving(fig, "AttackAngle.gif", 100):
-#     xlist, ylist, zlist = simulation_handler(vy=V_start * np.sin(frisbee_angle * math.pi / 180),
-#                                              vx=V_start * np.cos(frisbee_angle * math.pi / 180), frisbee_angle=
-#                                              frisbee_angle, dt=0.01, y=1, time_to_run=10, is_visualize=False,
-#                                              QuiverRun=[0, 20, 2])
-#     plt.scatter(xlist, ylist, s=10, c=zlist, cmap='rainbow')
-#     plt.colorbar(label="color of the point is the value of the attack angle")
-#     plt.title("animation of the path of the frisbee \n every line is a diffrent time the frisbee was thrown")
-#     plt.xlabel("x direction fo firsbee")
-#     plt.ylabel("y direction fo firsbee")
-#     plt.clim(-4, 60)
-#     writer.grab_frame()
-#     for frisbee_angle in np.linspace(1,30,30):
-#         xlist, ylist, zlist= simulation_handler(vy=V_start*np.sin(frisbee_angle*math.pi/180),
-#                                                 V_start=20*np.cos(frisbee_angle*math.pi/180),
-#                                                 frisbee_angle =frisbee_angle, dt = 0.01, y=1,
-#                                                 time_to_run=10, is_visualize=False, QuiverRun = [0,20,2])
-#         plt.scatter(xlist, ylist, s = 10, c=zlist, cmap='rainbow')
-#         plt.clim(-4, 60)
-#         writer.grab_frame()
