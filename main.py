@@ -132,8 +132,8 @@ def appendItems(ax, ay, y, x, vy, vx, t, ALPHA):
 
 def AnimateGraphDiffrences(V = 20, dt = 0.01, y=3):
     fps = 3
-    writer = PillowWriter(fps=fps, metadata=metadata)
     metadata =  dict(title = 'Movie', artist = 'Moah')
+    writer = PillowWriter(fps=fps, metadata=metadata)
     
     fig = plt.figure()
     frisbee_angle = 0
